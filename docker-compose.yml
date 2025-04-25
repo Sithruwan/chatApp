@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "4000:4000"
+    container_name: chat_server_container
+    environment:
+      DB_NAME: chatappdb
+      DB_USER: root
+      DB_PASSWORD: yourpassword
+      DB_DIALECT: mysql
+      DB_HOST: db
+    depends_on:
+      - db
+    volumes:
+      - ./backend:/app
+      - /backend/node_modules
+
+  db:
+    image: mysql:8
+    restart: always
+    container_name: mysql_container
+    environment:
+      MYSQL_ROOT_PASSWORD: yourpassword
+      MYSQL_DATABASE: chatappdb
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "5173:5173"
+    container_name: chat_frontend_container
+    depends_on:
+      - backend
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./:/frontend:/app
+      - node_modules:/frontend/node_modules
+
+volumes:
+  mysql_data:
+  node_modules:
+
+

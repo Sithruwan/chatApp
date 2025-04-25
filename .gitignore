@@ -1,0 +1,35 @@
+# Node.js
+**/node_modules/
+**/npm-debug.log
+**/yarn-error.log
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# dotenv files
+**/.env
+.env.*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build files
+frontend/dist/
+backend/dist/
+
+# Docker volumes
+volumes/
+
+# VSCode config (optional)
+.vscode/
+
+# Frontend
+frontend/.next/
+frontend/.turbo/
+frontend/out/
+
+# Others
+*.tgz
