@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { Message } from '../types';
 
-const SOCKET_URL =  'http://http://85.208.51.170:4000';
+const SOCKET_URL =  import.meta.env.VITE_API_URL || 'http://localhost:4000';
 
 export const useSocket = (onMessageReceived: (message: Message) => void) => {
   const socketRef = useRef<Socket | null>(null);
