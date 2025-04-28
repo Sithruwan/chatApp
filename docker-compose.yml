@@ -13,12 +13,13 @@ services:
       DB_PASSWORD: yourpassword
       DB_DIALECT: mysql
       DB_HOST: db
-      CLIENT_URL: http://frontend:5173
+      CLIENT_URL: http://85.208.51.170:5173
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     volumes:
       - ./backend:/app
-      - /backend/node_modules
+      - /app/node_modules
 
   db:
     image: mysql:8
@@ -31,6 +32,11 @@ services:
       - mysql_data:/var/lib/mysql
     ports:
       - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   frontend:
     build:
@@ -39,17 +45,15 @@ services:
       - "5173:5173"
     container_name: chat_frontend_container
     environment:
-      VITE_API_URL: http://backend:4000
+      VITE_API_URL: http://85.208.51.170:4000
     depends_on:
       - backend
     stdin_open: true
     tty: true
     volumes:
-      - ./:/frontend:/app
-      - node_modules:/frontend/node_modules
+      - ./frontend:/app
+      - node_modules:/app/node_modules
 
 volumes:
   mysql_data:
   node_modules:
-
-
